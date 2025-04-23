@@ -1,19 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import './Navbar.css'; // <-- Import your custom CSS here
+import './NavBar.css';
 
-const Navbar = () => {
+const NavBar = () => {
   return (
     <nav className="navbar">
-      <h1>StreamList</h1>
-      <div className="nav-links">
-        <Link to="/">Home</Link>
-        <Link to="/movies">Movies</Link>
-        <Link to="/cart">Cart</Link>
-        <Link to="/about">About</Link>
-      </div>
+      <h1><i className="fas fa-tv"></i> StreamList</h1>
+      <ul className="nav-links">
+        <li><a href="#streamlist">Home</a></li>
+        <li><a href="#movies">Movies</a></li>
+        <li><a href="#cart">Cart</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
     </nav>
   );
 };
 
-export default Navbar;
+export default NavBar;
