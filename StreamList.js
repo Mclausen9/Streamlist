@@ -1,33 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
+import StreamItem from './StreamItem';
 
-const StreamList = () => {
-  const [input, setInput] = useState('');
-  const [list, setList] = useState([]);
-
-  const handleAdd = () => {
-    if (input.trim()) {
-      console.log("Added:", input);
-      setList([...list, input]);
-      setInput('');
-    }
-  };
-
+const StreamList = ({ items, onEdit, onDelete, onComplete }) => {
   return (
-    <div className="streamlist">
-      <h2>My StreamList</h2>
-      <input
-        type="text"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Add a movie or show"
-      />
-      <button onClick={handleAdd}>Add</button>
-      <ul>
-        {list.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
-    </div>
+    <ul>
+      {items.map((item, index) => (
+        <StreamItem
+          key={index}
+          item={item}
+          index={index}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          onComplete={onComplete}
+        />
+      ))}
+    </ul>
   );
 };
 

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>StreamList App</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     body {
       font-family: 'Roboto', sans-serif;
@@ -20,6 +21,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+
+    .navbar h1 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .nav-links a {
@@ -57,6 +64,13 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    form button i {
+      font-size: 0.9rem;
     }
 
     ul {
@@ -65,11 +79,12 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- Navbar -->
   <div class="navbar">
-    <h1>StreamList</h1>
+    <h1><i class="fas fa-tv"></i> StreamList</h1>
     <div class="nav-links">
       <a href="#streamlist">Home</a>
       <a href="#movies">Movies</a>
@@ -85,25 +100,44 @@
       <h2>My Stream List</h2>
       <form id="streamForm">
         <input type="text" id="movieInput" placeholder="Add a movie or show" />
-        <button type="submit">Add</button>
+        <button type="submit"><i class="fas fa-plus"></i> Add</button>
       </form>
       <ul id="streamItems">
-        <li>Example Movie 1</li>
-        <li>Example Movie 2</li>
+        <li>
+          Add Movie 1
+          <button class="editBtn">Edit</button>
+          <button class="deleteBtn">Delete</button>
+        </li>
+        <li>
+          Add Movie 2
+          <button class="editBtn">Edit</button>
+          <button class="deleteBtn">Delete</button>
+        </li>
       </ul>
     </section>
 
     <!-- Movies Section -->
-    <section id="movies">
-      <h2>Movies</h2>
-      <p>This page will show all available movies in Week 4.</p>
-    </section>
-
+    <section id="movies" onmouseover="handleHover()" onmouseout="clearMessage()">
+        <h2><i class="fas fa-film" style="color:#2d89ef; margin-right: 10px;"></i>Movies</h2>
+      
+        <button onclick="handleClick()" style="padding: 0.5rem 1rem; background-color: #2d89ef; color: white; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fas fa-heart"></i> Love Movies
+        </button>
+      
+        <div id="eventMessage" style="margin-top: 1rem; font-style: italic; color: #333;"></div>
+      
+        <ul id="movieList" style="margin-top: 1rem; list-style-type: disc; padding-left: 1.5rem;"></ul>
+      </section>
+      
     <!-- Cart Section -->
-    <section id="cart">
-      <h2>Cart</h2>
-      <p>This page will manage your selected stream items for later viewing. (To be developed in Week 4)</p>
-    </section>
+<section id="cart">
+    <h2>
+      <i class="fas fa-shopping-cart" style="color:#2d89ef; margin-right:10px;"></i>
+      Cart
+    </h2>
+    <p>This page will manage your selected stream items for later viewing. (To be developed in Week 4)</p>
+  </section>
+  
 
     <!-- About Section -->
     <section id="about">
@@ -113,11 +147,105 @@
         and manage your list from anywhere.
       </p>
     </section>
-
+    <script>
+        const availableMovies = [
+          { title: "The Matrix", year: 1999 },
+          { title: "Inception", year: 2010 },
+          { title: "Everything Everywhere All At Once", year: 2022 },
+          { title: "Spider-Man: Across the Spider-Verse", year: 2023 },
+          { title: "The Batman", year: 2022 }
+        ];
+      
+        const movieList = document.getElementById('movieList');
+      
+        function displayMovies() {
+          movieList.innerHTML = ''; // Clear existing list
+          availableMovies.forEach(movie => {
+            const li = document.createElement('li');
+            li.textContent = `${movie.title} (${movie.year})`;
+            movieList.appendChild(li);
+          });
+        }
+      
+        // Call function to populate movies on load
+        window.addEventListener('DOMContentLoaded', displayMovies);
+        
+      </script>
+      
   </div>
 
-  <!-- Optional Script to Add Items (Just for fun in HTML) -->
+  <!-- JavaScript for Interactions -->
   <script>
+     messageDiv = document.getElementById('eventMessage');
+  
+    function handleClick() {
+      messageDiv.textContent = '🎬 You clicked the movies loved button!';
+    }
+  
+    function handleHover() {
+      messageDiv.textContent = '👀 Hovering over the movie section...';
+    }
+  
+    function clearMessage() {
+      messageDiv.textContent = '';
+    }
+  
+     form = document.getElementById('streamForm');
+     input = document.getElementById('movieInput');
+     list = document.getElementById('streamItems');
+  
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const value = input.value.trim();
+      if (value !== '') {
+        addListItem(value);
+        input.value = '';
+      }
+    });
+  
+    function addListItem(text) {
+      const li = document.createElement('li');
+      const span = document.createElement('span');
+      span.textContent = text;
+  
+      // Edit button
+      const editBtn = document.createElement('button');
+      editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+      editBtn.style.marginLeft = '10px';
+      editBtn.title = 'Edit';
+      editBtn.onclick = () => {
+        const newText = prompt('Edit item:', span.textContent);
+        if (newText) span.textContent = newText;
+      };
+  
+      // Delete button
+      const deleteBtn = document.createElement('button');
+      deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+      deleteBtn.style.marginLeft = '5px';
+      deleteBtn.title = 'Delete';
+      deleteBtn.onclick = () => {
+        li.remove();
+      };
+  
+      li.appendChild(span);
+      li.appendChild(editBtn);
+      li.appendChild(deleteBtn);
+      list.appendChild(li);
+    }
+  
+
+    function handleClick() {
+      messageDiv.textContent = '🎬 You clicked the movies loved button!';
+    }
+
+    function handleHover() {
+      messageDiv.textContent = '👀 Hovering over the movie section...';
+    }
+
+    function clearMessage() {
+      messageDiv.textContent = '';
+    }
+
     const form = document.getElementById('streamForm');
     const input = document.getElementById('movieInput');
     const list = document.getElementById('streamItems');
